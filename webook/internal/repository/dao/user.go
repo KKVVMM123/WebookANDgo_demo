@@ -38,6 +38,7 @@ func (dao *UserDao) Insert(ctx context.Context, u User) error {
 }
 
 func (dao *UserDao) FindByEmail(ctx context.Context, email string) (User, error) {
+	//通过email查找用户
 	var u User
 	err := dao.db.First(&u, "email = ?", email).Error
 	return u, err

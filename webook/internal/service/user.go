@@ -30,20 +30,21 @@ func (svc *UserService) SingUp(ctx context.Context, u domain.User) error {
 	return svc.repo.Create(ctx, u)
 }
 
-func (svc *UserService) Login(ctx context.Context, email, password string) error {
-	//先找用户
+func (svc *UserService) Login(ctx context.Context, email, password string) (domain.User, error) {
+	//调用repo层方法找到对应用户
 	u, err := svc.repo.FindByEmail(ctx, email)
+	//判断用户对象是否为空
 	if err == repository.ErrUserNotFind {
-		return ErrInvalidUserOrPassword
+		return domain.User{}, ErrInvalidUserOrPassword
 	}
 	if err != nil {
-		return err
+		return domain.User{}, err
 	}
-	//比较密码
+	//比较密码 即判断数据库的密码与前端传过来的密码是否一致
 	err = bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password))
 	if err != nil {
 		//接入日志后要打印日志或debug
-		return ErrInvalidUserOrPassword
+		return domain.User{}, ErrInvalidUserOrPassword
 	}
-	return nil
+	return u, nil
 }
