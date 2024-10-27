@@ -1,3 +1,4 @@
 学习golang零零散散记录
 
-master分支项目webook 前后端分离 目前只更新后端代码 还在更新中敬请期待
+master分支项目webook 前后端分离 目前只更新后端代码 测试Postman即可
+还在更新中敬请期待
